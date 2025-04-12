@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="ISO-8859-1">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Polymorphia Server</title>
+    <script src="maze.js"></script>
+    <script src="mazeDrawing.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="maze.css">
+</head>
+
+<body class="bg-light" onload="loadDefaultData()">
+
+<div class="container py-4">
+    <h1 class="text-center mb-4" style="font-family: 'Poppins', sans-serif; font-size: 3rem;">Polymorphia Server</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="gameDropDown">Select Game to View:</label>
+                    <select class="form-select" datatype="string" id="gameDropDown" name="gameDropDown"
+                            onchange="getGame()"></select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="statusMessage">Game Status:</label>
+                    <div class="border p-2 rounded bg-light" id="statusMessage"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <label class="form-label" for="playAutomatically">Play Automatically:</label>
+                    <input class="form-check-input" id="playAutomatically" name="playAutomatically"
+                           onclick="updateAutomatically()"
+                           type="checkbox" value="false">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="secondBetweenTurns">Seconds between turns:</label>
+                    <input class="form-control" id="secondBetweenTurns" name="secondBetweenTurns" type="number"
+                           value="2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-body" id="commandChoiceSection">
+                    <h5 class="card-title">Select Command</h5>
+                    <label class="form-label" for="commandChoice">Command:</label>
+                    <select class="form-select" id="commandChoice" name="commandChoice" size="5">
+                        <option value="move">Move</option>
+                        <option value="fight">Fight</option>
+                        <option value="eat">Eat</option>
+                        <option value="wear">Wear Armor</option>
+                    </select>
+                    <button class="btn btn-primary mt-3 w-100" onclick="playTurn()">Play Turn</button>
+                </div>
+            </div>
+            <div class="card my-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Create a New Game</h5>
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th class="text-end" scope="row">Name of Game:</th>
+                                <td><input class="form-control" id="name" name="name" type="text" value="API"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row">Player's Name:</th>
+                                <td><input class="form-control" id="playerName" name="playerName" type="text"
+                                           value="Professor"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Rooms:</th>
+                                <td><input class="form-control" id="numRooms" name="numRooms" type="text" value="9">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Adventurers:</th>
+                                <td><input class="form-control" id="numAdventurers" name="numAdventurers" type="text"
+                                           value="2"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Knights:</th>
+                                <td><input class="form-control" id="numKnights" name="numKnights" type="text" value="2">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Cowards:</th>
+                                <td><input class="form-control" id="numCowards" name="numCowards" type="text" value="2">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Gluttons:</th>
+                                <td><input class="form-control" id="numGluttons" name="numGluttons" type="text"
+                                           value="2"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Creatures:</th>
+                                <td><input class="form-control" id="numCreatures" name="numCreatures" type="text"
+                                           value="4"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Demons:</th>
+                                <td><input class="form-control" id="numDemons" name="numDemons" type="text" value="4">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Food Items:</th>
+                                <td><input class="form-control" id="numFood" name="numFood" type="text" value="7"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-end" scope="row"># of Armor Suits:</th>
+                                <td><input class="form-control" id="numArmor" name="numArmor" type="text" value="2">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-success mt-3 w-100" onclick="createGame()">Create Game</button>
+                    <br>
+                    <div class="mt-2 text-center" id="newGameStatus"></div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" id="gameTitle">Maze Name</h5>
+                    <svg class="w-100 border" height="800" id="maze" width="800">
+                        Sorry, your browser does not support inline SVG.
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
