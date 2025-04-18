@@ -27,6 +27,9 @@ public class Polymorphia {
         this.maze = maze;
         this.name = name;
     }
+    public Maze getMaze(){
+        return maze;
+    }
 
     public String getName() {
         return name;
@@ -50,11 +53,11 @@ public class Polymorphia {
         );
     }
 
-    List<String> getNamesOfLivingAdventurers() {
+    public List<String> getNamesOfLivingAdventurers() {
         return getLivingAdventurers().stream().map(Character::getName).toList();
     }
 
-    List<String> getNamesOfLivingCreatures() {
+    public List<String> getNamesOfLivingCreatures() {
         return getLivingCreatures().stream().map(Character::getName).toList();
     }
 

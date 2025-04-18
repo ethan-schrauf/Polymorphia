@@ -1,5 +1,6 @@
 package csci.ooad.polymorphia.server.controllers;
 
+import csci.ooad.polymorphia.Polymorphia;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,25 +14,29 @@ import java.util.Collections;
 public class PolymorphiaController {
     private static final Logger logger = LoggerFactory.getLogger(PolymorphiaController.class);
 
+
     public PolymorphiaController() {
-        // TODO: Create a default game here
+    //list of games
     }
 
+    //returns all games
     @GetMapping("/api/games")
     public ResponseEntity<?> getGames() {
         return new ResponseEntity<>(Collections.EMPTY_LIST, HttpStatus.OK);
     }
-
+    //game based on id
     @GetMapping("/api/game/{gameId}")
     public ResponseEntity<?> getGame(@PathVariable(name = "gameId", required = false) String gameId) {
         return new ResponseEntity<>("Game not found!", HttpStatus.NOT_FOUND);
     }
 
+    //add game to list
     @PostMapping("/api/game/create")
     public ResponseEntity<?> createGame(@Validated @RequestBody PolymorphiaParameters params) {
         return new ResponseEntity<>("Failed to create game", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
+    //send turn command to game
     @PutMapping("/api/game/{gameId}/playTurn/{command}")
     public ResponseEntity<?> playTurn(@PathVariable(name = "gameId") String gameId, @PathVariable(name = "command") String command) {
         return new ResponseEntity<>("Game not found!", HttpStatus.NOT_FOUND);
