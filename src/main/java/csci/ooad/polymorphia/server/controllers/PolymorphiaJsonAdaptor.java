@@ -2,9 +2,6 @@ package csci.ooad.polymorphia.server.controllers;
 
 import csci.ooad.polymorphia.Polymorphia;
 import csci.ooad.polymorphia.Room;
-import csci.ooad.polymorphia.characters.Adventurer;
-import csci.ooad.polymorphia.characters.Character;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +13,14 @@ public class PolymorphiaJsonAdaptor {
     public String statusMessage;
     public List<String> livingAdventurers;
     public List<String> livingCreatures;
-    public List<RoomJsonAdaptor> rooms;
+    public List<RoomJsonAdaptor> rooms ;
     public List<String> availableCommands;
-
-
 
     public PolymorphiaJsonAdaptor(String gameName, Polymorphia polymorphia) {
         name = gameName;
         turn = polymorphia.getTurnNumber();
+        rooms = new ArrayList<>();
         for(Room room: polymorphia.getMaze().getRooms()){
-            assert false;
             rooms.add(new RoomJsonAdaptor(room));
         }
         isInMiddleOfTurn = false;
@@ -36,10 +31,10 @@ public class PolymorphiaJsonAdaptor {
         availableCommands = new ArrayList<>();
     }
 
-    public class RoomJsonAdaptor {
+    public static class RoomJsonAdaptor {
         public String name;
-        public List<String> neighbors;
-        public List<String> contents;
+        public List<String> neighbors = new ArrayList<>();
+        public List<String> contents = new ArrayList<>();
 
         public RoomJsonAdaptor(Room room) {
             name = room.getName();
@@ -47,14 +42,12 @@ public class PolymorphiaJsonAdaptor {
             if (room.getContents() != null) {
                 contents = room.getContents();
             }
-            if(room.getNeighbors() != null) {
-                for(Room neighbor : room.getNeighbors()) {
-                    assert neighbors != null;
-                    neighbors.add(neighbor.getName());
+            if(!neighbors.isEmpty()) {
+                for (Room neighboringRoom : room.getNeighbors()) {
+                    neighbors.add(neighboringRoom.getName());
                 }
             }
-
         }
     }
-}
 
+}
