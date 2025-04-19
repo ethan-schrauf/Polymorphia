@@ -46,7 +46,9 @@ public class PolymorphiaController {
             return new ResponseEntity<>("Game not found!", HttpStatus.NOT_FOUND);
         }
         else{
-            return new ResponseEntity<>(gameId, HttpStatus.OK);
+            Polymorphia game = games.get(gameId);
+            PolymorphiaJsonAdaptor jsonAdaptor = new PolymorphiaJsonAdaptor(gameId,game);
+            return new ResponseEntity<>(jsonAdaptor, HttpStatus.OK);
         }
     }
 
@@ -71,7 +73,8 @@ public class PolymorphiaController {
 
             Polymorphia newGame = new Polymorphia(params.name(), newMaze);
             games.put(params.name(), newGame);
-            return new ResponseEntity<>("New game created", HttpStatus.CREATED);
+            PolymorphiaJsonAdaptor jsonAdaptor = new PolymorphiaJsonAdaptor(params.name(),newGame);
+            return new ResponseEntity<>(jsonAdaptor, HttpStatus.CREATED);
         }
 
     }

@@ -38,9 +38,10 @@ class PolymorphiaControllerTest {
     @Test
     void createGame() {
         String playerName = "Professor";
-        PolymorphiaParameters arcaneParameters = new PolymorphiaParameters(DEFAULT_GAME_ID, playerName,
+        PolymorphiaParameters arcaneParameters = new PolymorphiaParameters("Test1", playerName,
                 2, 2, 7, 1,
                 2, 2, 2, 10, 2);
+
         ResponseEntity<?> response = polymorphiaController.createGame(arcaneParameters);
         assertEquals(HttpStatusCode.valueOf(201), response.getStatusCode());
 
@@ -50,10 +51,14 @@ class PolymorphiaControllerTest {
     }
 
     @Test
-    void getGame() {
-        createGame();
+    void testGetGame() {
+        String playerName = "Professor";
+        PolymorphiaParameters arcaneParameters = new PolymorphiaParameters("test2", playerName,
+                2, 2, 7, 1,
+                2, 2, 2, 10, 2);
+        polymorphiaController.createGame(arcaneParameters);
 
-        ResponseEntity<?> response = polymorphiaController.getGame(DEFAULT_GAME_ID);
+        ResponseEntity<?> response = polymorphiaController.getGame("test2");
         assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
 
         PolymorphiaJsonAdaptor jsonAdaptor = (PolymorphiaJsonAdaptor) response.getBody();
