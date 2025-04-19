@@ -87,7 +87,6 @@ public class PolymorphiaController {
         }
         else{
             Polymorphia game = games.get(gameId);
-            game.playTurn();
             PolymorphiaJsonAdaptor json = new PolymorphiaJsonAdaptor(game.getName(),game);
             return new ResponseEntity<>(json, HttpStatus.OK);
         }
