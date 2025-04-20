@@ -1,5 +1,9 @@
 package csci.ooad.polymorphia.characters;
 
+import csci.ooad.polymorphia.commands.Command;
+
+import java.util.List;
+
 public class Adventurer extends Character {
     public Adventurer(String name) {
         super(name);
@@ -18,5 +22,6 @@ public class Adventurer extends Character {
     public String toString() {
         return "Adv: " + super.toString();
     }
+
 
 }

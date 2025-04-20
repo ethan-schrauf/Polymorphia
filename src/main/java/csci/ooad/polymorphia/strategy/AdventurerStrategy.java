@@ -85,7 +85,7 @@ abstract public class AdventurerStrategy extends PlayStrategy {
     }
 
     // Returns every possible version of all commands for this character and room
-    protected List<List<Command>> getAllPossibleCommands(Character character, Room room) {
+    public List<List<Command>> getAllPossibleCommands(Character character, Room room) {
         List<List<Command>> possibleCommands = new ArrayList<>();
         possibleCommands.add(Collections.singletonList(commandFactory.createNullCommand()));
 

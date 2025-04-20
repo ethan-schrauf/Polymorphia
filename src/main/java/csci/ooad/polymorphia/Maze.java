@@ -352,5 +352,9 @@ public class Maze {
             nextRoom().add(characterFactory.createRandomStrategyAdventurer(name));
             return this;
         }
+        public Builder createAndAddAPIPlayer(String name) {
+            nextRoom().add(characterFactory.createAPIPlayer(name));
+            return this;
+        }
     }
 }

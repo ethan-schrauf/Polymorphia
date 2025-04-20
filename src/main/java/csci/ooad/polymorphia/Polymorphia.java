@@ -1,8 +1,10 @@
 package csci.ooad.polymorphia;
 
 import csci.ooad.polymorphia.characters.Character;
+import csci.ooad.polymorphia.commands.Command;
 import csci.ooad.polymorphia.observers.EventBusEnum;
 import csci.ooad.polymorphia.observers.IPolymorphiaObserver;
+import csci.ooad.polymorphia.strategy.APIStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +21,24 @@ public class Polymorphia {
     private final Maze maze;
     private Integer turnCount = 0;
     private final Random rand = new Random();
+    List<Character> remainingCharactersToExecuteTurn = new ArrayList<>();
+    private boolean pendingPossibleCommand = false;
+    private boolean inMiddleOfTurn = false;
+    Character currentCharacter = null;
+    List<List<Command>> commands = new ArrayList<>();
 
+    public List<List<Command>> getCommands() {
+        return commands;
+    }
+    public List<String> commandsToString() {
+        List<String> availableCommands = new ArrayList<>();
+        for(List<Command> command: commands){
+            for(Command commandItem: command){
+                availableCommands.add(commandItem.toString());
+            }
+        }
+        return availableCommands;
+    }
     public Polymorphia(Maze maze) {
         this(DEFAULT_NAME, maze);
     }
@@ -89,19 +108,68 @@ public class Polymorphia {
         return maze.hasLivingAdventurers();
     }
 
-    public void playTurn() {
-        turnCount += 1;
-
-        // Process all the characters in random order
-        List<Character> characters = getLivingCharacters();
-        while (!characters.isEmpty()) {
-            int index = rand.nextInt(characters.size());
-            Character currentCharacter = characters.get(index);
-            if (!isOver() && currentCharacter.isAlive()) {
-                characters.get(index).doAction();
+    public Command getCommandFromName(String name){
+        for(List<Command> command: commands){
+            for(Command commandItem: command){
+                if(commandItem.toString().equals(getName())){
+                    return commandItem;
+                }
             }
-            characters.remove(index);
         }
+        return null;
+    }
+
+    public void playTurn(String command) {
+
+        if(inMiddleOfTurn){
+            //execute api command
+            //run rest of characters
+            if(currentCharacter.isAPICharacter()){
+                if(command != null){
+                    if(commandsToString().contains(command)){
+                        Command APIcommand = getCommandFromName(command);
+                        if(APIcommand != null){
+                            currentCharacter.setPlayStrategy(new APIStrategy(APIcommand));
+                            currentCharacter.doAction();
+                            inMiddleOfTurn = false;
+                        }
+                        else{
+                            return;
+                        }
+                    }
+                }
+            }
+            List<Character> characters = remainingCharactersToExecuteTurn;
+            while (!characters.isEmpty()) {
+                int index = rand.nextInt(characters.size());
+                Character currentCharacter = characters.get(index);
+                if (!isOver() && currentCharacter.isAlive()) {
+                    characters.get(index).doAction();
+                }
+                characters.remove(index);
+            }
+        }
+        else{
+            turnCount += 1;
+            // Process all the characters in random order
+            List<Character> characters = getLivingCharacters();
+            while (!characters.isEmpty()) {
+                int index = rand.nextInt(characters.size());
+                currentCharacter = characters.get(index);
+                if (!isOver() && currentCharacter.isAlive()) {
+                    if(currentCharacter.isAPICharacter()){
+                        inMiddleOfTurn = true;
+                        remainingCharactersToExecuteTurn = characters;
+                        remainingCharactersToExecuteTurn.remove(index);
+                        commands = currentCharacter.getPlayStrategy().getAllPossibleCommands(currentCharacter,currentCharacter.getCurrentLocation());
+                        break;
+                    }
+                    characters.get(index).doAction();
+                }
+                characters.remove(index);
+            }
+        }
+
     }
 
     public List<Character> getLivingCharacters() {
@@ -112,7 +180,7 @@ public class Polymorphia {
         logger.info("Starting play...");
         while (!isOver()) {
             logger.info(this.toString());
-            playTurn();
+            playTurn("null");
             EventBusEnum.INSTANCE.broadcast(PolymorphiaEventType.TurnEnded, shortStatus());
         }
         announceResults();

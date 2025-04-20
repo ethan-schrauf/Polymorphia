@@ -47,7 +47,7 @@ public abstract class Character implements Comparable<Character> {
         this.playStrategy = new DoNothingStrategy();
     }
 
-    PlayStrategy getPlayStrategy() {
+    public PlayStrategy getPlayStrategy() {
         return this.playStrategy;
     }
     public void setPlayStrategy(PlayStrategy playStrategy) {
@@ -129,6 +129,9 @@ public abstract class Character implements Comparable<Character> {
     }
     public Boolean isDemon() {
         return false;
+    }
+    public Boolean isAPICharacter(){
+        return getPlayStrategy().isAPICharacter();
     }
 
     public boolean fightToTheDeath(Character foe) {

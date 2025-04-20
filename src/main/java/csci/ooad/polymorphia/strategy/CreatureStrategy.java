@@ -4,6 +4,7 @@ import csci.ooad.polymorphia.Room;
 import csci.ooad.polymorphia.characters.Character;
 import csci.ooad.polymorphia.commands.Command;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CreatureStrategy extends PlayStrategy {
@@ -16,6 +17,11 @@ public class CreatureStrategy extends PlayStrategy {
         } else {
             return commandFactory.createMoveCommand(myself, currentRoom.getRandomNeighbor());
         }
+    }
+
+    @Override
+    public List<List<Command>> getAllPossibleCommands(Character character, Room room) {
+        return List.of();
     }
 
 }

@@ -28,10 +28,6 @@ public class PolymorphiaController {
         }
         else{
             List<Polymorphia> gamesList = new ArrayList<>(games.values());
-//            List<PolymorphiaJsonAdaptor> jsonAdaptors = new ArrayList<>();
-//            for(Polymorphia game : gamesList){
-//                jsonAdaptors.add(new PolymorphiaJsonAdaptor(game.getName(),game));
-//            }
             List<String> gameNames = new ArrayList<>();
             for(Polymorphia game : gamesList){
                 gameNames.add(game.getName());
@@ -68,7 +64,7 @@ public class PolymorphiaController {
                     .createAndAddDemons(params.numDemons())
                     .createAndAddFoodItems(params.numFood())
                     .createAndAddArmor(params.numArmor())
-//                    .addAPIPlayer(params.playerName())
+                    .createAndAddAPIPlayer(params.playerName())
                     .build();
 
             Polymorphia newGame = new Polymorphia(params.name(), newMaze);
@@ -87,6 +83,7 @@ public class PolymorphiaController {
         }
         else{
             Polymorphia game = games.get(gameId);
+            game.playTurn(command);
             PolymorphiaJsonAdaptor json = new PolymorphiaJsonAdaptor(game.getName(),game);
             return new ResponseEntity<>(json, HttpStatus.OK);
         }

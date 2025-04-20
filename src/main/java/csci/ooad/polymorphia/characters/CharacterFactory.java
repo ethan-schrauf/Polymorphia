@@ -82,6 +82,7 @@ public class CharacterFactory {
         return createCharacters(numToCreate, FIGHTER_NAMES, this::createFighter);
     }
 
+
     public List<Character> createRandomStrategyAdventurers(int numToCreate) {
         return createCharacters(numToCreate, RANDOM_NAMES, this::createRandomStrategyAdventurer);
     }
@@ -136,6 +137,11 @@ public class CharacterFactory {
     public Character createHumanPlayer(String name) {
         Character rando = new Adventurer(name, getRandomInitialHealth());
         rando.setPlayStrategy(new HumanStrategy());
+        return rando;
+    }
+    public Character createAPIPlayer(String name){
+        Character rando = new Adventurer(name, 8.0);
+        rando.setPlayStrategy(new APIStrategy(null));
         return rando;
     }
 

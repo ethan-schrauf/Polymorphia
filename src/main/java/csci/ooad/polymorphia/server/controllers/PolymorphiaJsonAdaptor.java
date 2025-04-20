@@ -2,6 +2,8 @@ package csci.ooad.polymorphia.server.controllers;
 
 import csci.ooad.polymorphia.Polymorphia;
 import csci.ooad.polymorphia.Room;
+import csci.ooad.polymorphia.commands.Command;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class PolymorphiaJsonAdaptor {
     public List<String> livingAdventurers;
     public List<String> livingCreatures;
     public List<RoomJsonAdaptor> rooms ;
-    public List<String> availableCommands;
+    public List<String> availableCommands = new ArrayList<>();
 
     public PolymorphiaJsonAdaptor(String gameName, Polymorphia polymorphia) {
         name = gameName;
@@ -28,7 +30,12 @@ public class PolymorphiaJsonAdaptor {
         statusMessage = "";
         livingCreatures = polymorphia.getNamesOfLivingCreatures();
         livingAdventurers = polymorphia.getNamesOfLivingAdventurers();
-        availableCommands = new ArrayList<>();
+        List<List<Command>> commands = polymorphia.getCommands();
+        for(List<Command> command: commands){
+            for(Command commandItem: command){
+                availableCommands.add(commandItem.toString());
+            }
+        }
     }
 
     public static class RoomJsonAdaptor {
@@ -42,11 +49,10 @@ public class PolymorphiaJsonAdaptor {
             if (room.getContents() != null) {
                 contents = room.getContents();
             }
-            if(!neighbors.isEmpty()) {
-                for (Room neighboringRoom : room.getNeighbors()) {
+            for (Room neighboringRoom : room.getNeighbors()) {
                     neighbors.add(neighboringRoom.getName());
-                }
             }
+
         }
     }
 
