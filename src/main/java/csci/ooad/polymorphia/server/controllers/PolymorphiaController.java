@@ -24,7 +24,7 @@ public class PolymorphiaController {
     @GetMapping("/api/games")
     public ResponseEntity<?> getGames() {
         if(games.isEmpty()){
-            return new ResponseEntity<>(Collections.EMPTY_LIST, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No games!", HttpStatus.NOT_FOUND);
         }
         else{
             List<Polymorphia> gamesList = new ArrayList<>(games.values());
