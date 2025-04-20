@@ -1,9 +1,6 @@
 package csci.ooad.polymorphia.server.controllers;
 import csci.ooad.polymorphia.Maze;
 import csci.ooad.polymorphia.Polymorphia;
-import csci.ooad.polymorphia.characters.Adventurer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,8 +10,7 @@ import java.util.*;
 
 @RestController
 public class PolymorphiaController {
-    private static final Logger logger = LoggerFactory.getLogger(PolymorphiaController.class);
-    private Map<String,Polymorphia> games;
+    private final Map<String,Polymorphia> games;
 
     public PolymorphiaController() {
         games = new HashMap<>();

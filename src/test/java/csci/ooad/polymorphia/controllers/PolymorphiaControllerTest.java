@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {PolymorphiaServerApplication.class, PolymorphiaController.class})
 class PolymorphiaControllerTest {
-    static String DEFAULT_GAME_ID = "MyGame";
 
     PolymorphiaController polymorphiaController;
 
