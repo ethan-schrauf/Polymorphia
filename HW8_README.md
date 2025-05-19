@@ -1,7 +1,7 @@
 # OOAD Homework Standard Intro / Preamble
 
-    Team Members: ______________________________
-    Java Version: ________________________________
+    Team Members: Ethan Schrauf & Ragan Lee
+    Java Version: JDK 23
     Additional Comments, Assumptions, Required Written Comment (not usually required):
 
 For all code submissions, the following will be required:
